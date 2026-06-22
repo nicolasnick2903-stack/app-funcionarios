@@ -7,6 +7,8 @@ import PontoScreen from "@/screens/PontoScreen";
 import FeriasScreen from "@/screens/FeriasScreen";
 import AtestadoScreen from "@/screens/AtestadoScreen";
 import FeedScreen from "@/screens/FeedScreen";
+import FuncionariosScreen from "@/screens/admin/FuncionariosScreen";
+import CadastroFuncionarioScreen from "@/screens/admin/CadastroFuncionarioScreen";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, carregando } = useAuth();
@@ -96,6 +98,26 @@ export default function App() {
             <AuthGuard>
               <AppLayout>
                 <FeedScreen />
+              </AppLayout>
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/admin/funcionarios"
+          element={
+            <AuthGuard>
+              <AppLayout>
+                <FuncionariosScreen />
+              </AppLayout>
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/admin/funcionarios/novo"
+          element={
+            <AuthGuard>
+              <AppLayout>
+                <CadastroFuncionarioScreen />
               </AppLayout>
             </AuthGuard>
           }

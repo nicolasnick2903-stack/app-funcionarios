@@ -49,7 +49,9 @@ export default function LoginScreen() {
 
   return (
     <div className="login-screen">
-      <img src="/icons/icon-192.png" alt="MH" className="login-logo" />
+      <div className="login-logo-wrap">
+        <img src="/logo.png" alt="MH Facilities & Segurança" className="login-logo" />
+      </div>
       <h1 className="login-title">MH Funcionário</h1>
       <p className="login-sub">Portal exclusivo da equipe MH Facilities &amp; Segurança</p>
 

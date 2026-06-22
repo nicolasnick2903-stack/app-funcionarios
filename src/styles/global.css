@@ -272,7 +272,23 @@ input, select, textarea { font: inherit; }
   background: radial-gradient(ellipse at top, rgba(212,175,55,0.1), transparent 50%), var(--black);
 }
 
-.login-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 16px; }
+.login-logo-wrap {
+  position: relative;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-logo-wrap::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.login-logo { width: 200px; height: 200px; object-fit: contain; border-radius: 16px; position: relative; z-index: 1; }
 .login-title { font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 4px; }
 .login-sub { color: var(--muted); font-size: 0.88rem; text-align: center; margin-bottom: 32px; }
 .login-form { width: 100%; max-width: 380px; }

@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, orderBy, getDocs, Timestamp, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, query, orderBy, getDocs, Timestamp, doc, updateDoc, where } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { SolicitacaoFerias } from "@/types";
 
@@ -35,6 +35,39 @@ export async function buscarMinhasFerias(uid: string): Promise<SolicitacaoFerias
   );
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() } as SolicitacaoFerias));
+}
+
+export async function buscarTodasFerias(): Promise<SolicitacaoFerias[]> {
+  const q = query(collection(db, "ferias"), orderBy("criadoTs", "desc"));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as SolicitacaoFerias));
+}
+
+export async function programarFerias(
+  uid: string,
+  nomeFunc: string,
+  dataInicio: string,
+  dataFim: string,
+  aprovadoPor: string,
+  observacao?: string
+): Promise<string> {
+  const inicio = new Date(dataInicio);
+  const fim = new Date(dataFim);
+  const dias = Math.ceil((fim.getTime() - inicio.getTime()) / 86400000) + 1;
+  const ref = await addDoc(collection(db, "ferias"), {
+    uid,
+    nomeFunc,
+    dataInicio,
+    dataFim,
+    diasSolicitados: dias,
+    observacao: observacao ?? "",
+    status: "aprovado",
+    aprovadoPor,
+    criadoEm: new Date().toISOString(),
+    criadoTs: Timestamp.now(),
+    atualizadoEm: new Date().toISOString()
+  });
+  return ref.id;
 }
 
 export async function atualizarStatusFerias(

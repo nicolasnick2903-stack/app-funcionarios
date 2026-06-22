@@ -10,24 +10,24 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Pontos: funcionário cria/lê apenas os próprios; gestor/admin lê todos
+    // Pontos: funcionário cria/lê os próprios; gestor/admin lê, edita e exclui todos
     match /pontos/{docId} {
       allow create: if request.auth != null
         && request.resource.data.uid == request.auth.uid;
       allow read: if request.auth != null
         && (resource.data.uid == request.auth.uid
             || isGestorOuAdmin());
-      allow update, delete: if false;
+      allow update, delete: if request.auth != null && isGestorOuAdmin();
     }
 
-    // Férias: funcionário cria/lê os próprios; rh/admin lê e atualiza todos
+    // Férias: funcionário cria/lê os próprios; gestor/rh/admin cria para outros, lê e atualiza todos
     match /ferias/{docId} {
       allow create: if request.auth != null
-        && request.resource.data.uid == request.auth.uid;
+        && (request.resource.data.uid == request.auth.uid || isGestorOuRhOuAdmin());
       allow read: if request.auth != null
         && (resource.data.uid == request.auth.uid
-            || isRhOuAdmin());
-      allow update: if request.auth != null && isRhOuAdmin();
+            || isGestorOuRhOuAdmin());
+      allow update: if request.auth != null && isGestorOuRhOuAdmin();
       allow delete: if false;
     }
 

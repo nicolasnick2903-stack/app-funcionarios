@@ -8,6 +8,8 @@ export interface Usuario {
   cargo: string;
   setor: string;
   matricula: string;
+  cpf?: string;
+  dataNascimento?: string;
   avatarUrl?: string;
   ativo: boolean;
   criadoEm: string;

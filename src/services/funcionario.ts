@@ -26,6 +26,8 @@ export async function cadastrarFuncionario(dados: {
   cargo: string;
   setor: string;
   matricula: string;
+  cpf?: string;
+  dataNascimento?: string;
 }): Promise<void> {
   const secondaryAuth = getSecondaryAuth();
   const { user } = await createUserWithEmailAndPassword(
@@ -42,12 +44,21 @@ export async function cadastrarFuncionario(dados: {
     cargo: dados.cargo,
     setor: dados.setor,
     matricula: dados.matricula,
+    cpf: dados.cpf ?? "",
+    dataNascimento: dados.dataNascimento ?? "",
     avatarUrl: "",
     ativo: true,
     criadoEm: new Date().toISOString(),
   });
 
   await secondaryAuth.signOut();
+}
+
+export async function editarFuncionario(
+  uid: string,
+  dados: Partial<Omit<Usuario, "uid" | "criadoEm">>
+): Promise<void> {
+  await updateDoc(doc(db, "usuarios", uid), { ...dados, atualizadoEm: new Date().toISOString() });
 }
 
 export async function buscarTodosFuncionarios(): Promise<Usuario[]> {

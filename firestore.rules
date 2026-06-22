@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Usuários: só o próprio usuário lê/atualiza seus dados
+    match /usuarios/{uid} {
+      allow read, update: if request.auth != null && request.auth.uid == uid;
+      allow create: if false; // criação via Admin SDK apenas
+    }
+
+    // Pontos: funcionário cria/lê apenas os próprios; gestor/admin lê todos
+    match /pontos/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null
+        && (resource.data.uid == request.auth.uid
+            || isGestorOuAdmin());
+      allow update, delete: if false;
+    }
+
+    // Férias: funcionário cria/lê os próprios; rh/admin lê e atualiza todos
+    match /ferias/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null
+        && (resource.data.uid == request.auth.uid
+            || isRhOuAdmin());
+      allow update: if request.auth != null && isRhOuAdmin();
+      allow delete: if false;
+    }
+
+    // Atestados: funcionário cria/lê os próprios; rh/admin lê e atualiza todos
+    match /atestados/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null
+        && (resource.data.uid == request.auth.uid
+            || isRhOuAdmin());
+      allow update: if request.auth != null && isRhOuAdmin();
+      allow delete: if false;
+    }
+
+    // Avisos: qualquer autenticado lê; gestor/rh/admin cria; admin deleta
+    match /avisos/{docId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && isGestorOuRhOuAdmin();
+      allow update: if request.auth != null && isAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
+
+    // Helpers — leem o perfil do usuário autenticado
+    function getPerfil() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil;
+    }
+    function isGestorOuAdmin() {
+      return getPerfil() in ["gestor", "admin"];
+    }
+    function isRhOuAdmin() {
+      return getPerfil() in ["rh", "admin"];
+    }
+    function isGestorOuRhOuAdmin() {
+      return getPerfil() in ["gestor", "rh", "admin"];
+    }
+    function isAdmin() {
+      return getPerfil() == "admin";
+    }
+  }
+}

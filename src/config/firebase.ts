@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // Substitua com as credenciais do seu projeto Firebase
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO",
-  storageBucket: "SEU_PROJETO.appspot.com",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
+export const firebaseConfig = {
+  apiKey: "AIzaSyAi_jfxUstfOkL2RoQDvhy-WXQwY5gdqe4",
+  authDomain: "mh-funcionario.firebaseapp.com",
+  projectId: "mh-funcionario",
+  storageBucket: "mh-funcionario.firebasestorage.app",
+  messagingSenderId: "213494974816",
+  appId: "1:213494974816:web:535b857a29c012d3643605"
 };
 
 const app = initializeApp(firebaseConfig);

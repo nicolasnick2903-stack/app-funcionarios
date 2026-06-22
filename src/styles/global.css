@@ -356,6 +356,75 @@ input, select, textarea { font: inherit; }
 .aviso-conteudo { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
 .aviso-meta { font-size: 0.75rem; color: rgba(247,243,232,0.38); margin-top: 10px; }
 
+/* ── SPLASH ──────────────────────────── */
+
+@keyframes splashFadeIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes splashFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes splashRing {
+  0%   { transform: scale(0.85); opacity: 0.4; }
+  50%  { transform: scale(1.08); opacity: 0.9; }
+  100% { transform: scale(0.85); opacity: 0.4; }
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: splashFadeIn 0.6s ease both;
+}
+
+.splash.splash-out {
+  animation: splashFadeOut 0.55s ease forwards;
+}
+
+.splash-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-inner::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 2px solid rgba(212, 175, 55, 0.35);
+  animation: splashRing 2s ease-in-out infinite;
+}
+
+.splash-inner::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  animation: splashRing 2s ease-in-out infinite 0.3s;
+}
+
+.splash-logo {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+}
+
 /* ── ADMIN ───────────────────────────── */
 
 .admin-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -388,6 +457,7 @@ input, select, textarea { font: inherit; }
 .admin-ponto-meta { font-size: 0.72rem; color: var(--gold-soft); }
 .admin-col-right { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
 .card-spaced { margin-bottom: 12px; }
+.loading-screen { display: flex; align-items: center; justify-content: center; height: 100dvh; }
 
 /* ── SPINNER ─────────────────────────── */
 

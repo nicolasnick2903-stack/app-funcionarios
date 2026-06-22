@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { logout } from "@/services/auth";
 import { formatarData } from "@/utils/format";
 
 export default function HomeScreen() {
   const { perfil } = useAuth();
   const navigate = useNavigate();
   const hoje = formatarData(new Date().toISOString());
+
+  async function handleSair() {
+    if (!confirm("Deseja sair do aplicativo?")) return;
+    await logout();
+    navigate("/", { replace: true });
+  }
 
   const atalhos = [
     {
@@ -60,25 +67,33 @@ export default function HomeScreen() {
 
   return (
     <div className="screen">
-      <div className="home-header">
-        <p className="eyebrow">{hoje}</p>
-        <h1>Olá, {perfil?.nome?.split(" ")[0] ?? "Funcionário"} 👋</h1>
-        <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: 4 }}>
-          {perfil?.cargo ?? ""} {perfil?.setor ? `· ${perfil.setor}` : ""}
-        </p>
+      <div className="home-topbar">
+        <div>
+          <p className="eyebrow">{hoje}</p>
+          <h1>Olá, {perfil?.nome?.split(" ")[0] ?? "Funcionário"} 👋</h1>
+          <p className="home-cargo">
+            {perfil?.cargo ?? ""} {perfil?.setor ? `· ${perfil.setor}` : ""}
+          </p>
+        </div>
+        <button type="button" className="btn-sair" onClick={handleSair} title="Sair">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} width={20} height={20}>
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1={21} y1={12} x2={9} y2={12} />
+          </svg>
+          Sair
+        </button>
       </div>
 
-      <div className="card" style={{ marginBottom: 20 }}>
+      <div className="card card-mb20">
         <p className="card-title">Matrícula</p>
-        <p style={{ fontSize: "1.1rem", fontWeight: 900, color: "var(--gold-soft)" }}>
-          {perfil?.matricula ?? "---"}
-        </p>
+        <p className="matricula-value">{perfil?.matricula ?? "---"}</p>
       </div>
 
       <p className="card-title" style={{ marginBottom: 12 }}>Acesso Rápido</p>
       <div className="quick-grid">
         {atalhos.map((a) => (
-          <button key={a.path} className="quick-card" onClick={() => navigate(a.path)}>
+          <button key={a.path} type="button" className="quick-card" onClick={() => navigate(a.path)}>
             {a.icon}
             <span>{a.label}</span>
             <small>{a.desc}</small>

@@ -7,3 +7,6 @@ dist-ssr/
 *.local
 .DS_Store
 .vscode/
+
+# Local Netlify folder
+.netlify

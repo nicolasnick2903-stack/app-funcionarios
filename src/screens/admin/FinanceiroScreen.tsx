@@ -101,6 +101,28 @@ export default function FinanceiroScreen() {
     await carregar();
   }
 
+
+  function exportarCSV() {
+    const cab = ["Data", "Tipo", "Descricao", "Categoria", "Condominio", "Valor", "Lancado por"];
+    const linhas = listaFiltrada.map((t) => [
+      new Date(t.data + "T12:00:00").toLocaleDateString("pt-BR"),
+      t.tipo === "entrada" ? "Entrada" : "Saida",
+      t.descricao,
+      CATEGORIAS.find((c) => c.value === t.categoria)?.label ?? t.categoria,
+      t.condominioNome ?? "",
+      t.valor.toFixed(2).replace(".", ","),
+      t.criadoPor,
+    ]);
+    const csv = [cab, ...linhas].map((row) => row.map((c) => '"' + c + '"').join(";")).join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "financeiro_" + mesAno(ano, mes).replace(" de ", "_") + ".csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="screen">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
@@ -141,6 +163,18 @@ export default function FinanceiroScreen() {
           <p style={{ fontSize: "0.9rem", fontWeight: 700, color: saldo >= 0 ? "var(--gold-soft)" : "var(--danger)" }}>{formatarValor(saldo)}</p>
         </div>
       </div>
+
+      {/* Exportar CSV */}
+      {listaFiltrada.length > 0 && (
+        <button className="btn btn-secondary" style={{ marginBottom: 14, minHeight: 40 }} onClick={exportarCSV}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={16} height={16}>
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1={12} y1={15} x2={12} y2={3} />
+          </svg>
+          Exportar CSV
+        </button>
+      )}
 
       {/* Filtro por condominio */}
       {condominios.length > 0 && (

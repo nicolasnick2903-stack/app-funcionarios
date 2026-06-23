@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
+import { collection, addDoc, query, where, orderBy, getDocs, Timestamp, doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/config/firebase";
 import { Atestado, TipoAtestado } from "@/types";
@@ -44,4 +44,24 @@ export async function buscarMeusAtestados(uid: string): Promise<Atestado[]> {
   );
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Atestado));
+}
+
+export async function buscarTodosAtestados(): Promise<Atestado[]> {
+  const q = query(collection(db, "atestados"), orderBy("criadoTs", "desc"));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Atestado));
+}
+
+export async function atualizarStatusAtestado(
+  id: string,
+  status: "aprovado" | "rejeitado",
+  aprovadoPor: string,
+  motivoRejeicao?: string
+) {
+  await updateDoc(doc(db, "atestados", id), {
+    status,
+    aprovadoPor,
+    motivoRejeicao: motivoRejeicao ?? null,
+    atualizadoEm: new Date().toISOString()
+  });
 }

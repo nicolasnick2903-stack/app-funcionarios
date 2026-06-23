@@ -61,6 +61,7 @@ export interface Atestado {
   criadoEm: string;
   atualizadoEm?: string;
   aprovadoPor?: string;
+  motivoRejeicao?: string;
 }
 
 export interface Condominio {

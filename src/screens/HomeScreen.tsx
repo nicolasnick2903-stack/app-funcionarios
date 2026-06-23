@@ -92,6 +92,19 @@ export default function HomeScreen() {
 
       <p className="card-title" style={{ marginBottom: 12 }}>Acesso Rápido</p>
       <div className="quick-grid">
+        {(perfil?.perfil === "admin" || perfil?.perfil === "gestor") && (
+          <button type="button" className="quick-card" onClick={() => navigate("/admin/condominios")}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={28} height={28}>
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>Condomínios</span>
+            <small>Cadastrar e gerenciar</small>
+          </button>
+        )}
+      </div>
+      <p className="card-title" style={{ marginBottom: 12, marginTop: 8 }}>Ações</p>
+      <div className="quick-grid">
         {atalhos.map((a) => (
           <button key={a.path} type="button" className="quick-card" onClick={() => navigate(a.path)}>
             {a.icon}

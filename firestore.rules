@@ -42,6 +42,13 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Condomínios: admin/gestor gerencia; demais autenticados leem
+    match /condominios/{docId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && isGestorOuAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
+
     // Avisos: qualquer autenticado lê; gestor/rh/admin cria; admin deleta
     match /avisos/{docId} {
       allow read: if request.auth != null;

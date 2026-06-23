@@ -63,6 +63,24 @@ export interface Atestado {
   aprovadoPor?: string;
 }
 
+export interface Condominio {
+  id: string;
+  nome: string;
+  endereco: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  cep?: string;
+  cnpj?: string;
+  nomeSindico?: string;
+  telefoneSindico?: string;
+  emailSindico?: string;
+  unidades?: number;
+  ativo: boolean;
+  criadoEm: string;
+  atualizadoEm?: string;
+}
+
 export type TipoAviso = "geral" | "urgente" | "rh" | "escala" | "treinamento";
 
 export interface Aviso {

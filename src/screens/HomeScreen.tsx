@@ -70,7 +70,8 @@ export default function HomeScreen() {
   ];
 
   return (
-    <div className="screen">
+    <>
+    <div className={`screen${drawerOpen ? " screen-locked" : ""}`}>
       <div className="home-topbar">
         {isAdmin && (
           <button type="button" className="btn-hamburger" onClick={() => setDrawerOpen(true)} title="Menu admin">
@@ -137,9 +138,10 @@ export default function HomeScreen() {
         ))}
       </div>
 
-      {isAdmin && (
-        <AdminDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      )}
     </div>
+    {isAdmin && (
+      <AdminDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+    )}
+    </>
   );
 }

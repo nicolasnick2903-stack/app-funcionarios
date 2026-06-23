@@ -620,6 +620,12 @@ input, select, textarea { font: inherit; }
   border-top: 1px solid var(--line);
 }
 
+/* lock scroll when drawer is open */
+.screen-locked {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
 /* hamburger button */
 .btn-hamburger {
   display: flex;

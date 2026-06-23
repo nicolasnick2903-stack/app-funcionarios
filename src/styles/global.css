@@ -135,7 +135,7 @@ input, select, textarea { font: inherit; }
 .card-title {
   font-size: 0.82rem;
   font-weight: 900;
-  color: var(--muted);
+  color: #fff;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -335,8 +335,8 @@ input, select, textarea { font: inherit; }
 .quick-card:active { transform: scale(0.97); }
 .quick-card:hover { border-color: rgba(212,175,55,0.4); }
 .quick-card svg { color: var(--gold-soft); }
-.quick-card span { font-weight: 900; font-size: 0.92rem; }
-.quick-card small { color: var(--muted); font-size: 0.78rem; }
+.quick-card span { font-weight: 900; font-size: 0.92rem; color: #fff; }
+.quick-card small { color: rgba(255,255,255,0.75); font-size: 0.78rem; }
 
 /* ── PONTO ───────────────────────────── */
 
@@ -494,7 +494,7 @@ input, select, textarea { font: inherit; }
   gap: 12px;
   margin-bottom: 20px;
 }
-.home-cargo { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+.home-cargo { color: rgba(255,255,255,0.75); font-size: 0.85rem; margin-top: 4px; }
 .matricula-value { font-size: 1.1rem; font-weight: 900; color: var(--gold-soft); }
 .btn-sair {
   display: flex;

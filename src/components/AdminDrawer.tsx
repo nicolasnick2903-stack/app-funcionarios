@@ -7,7 +7,18 @@ interface Props {
 
 const menuItems = [
   {
-    label: "Cadastro de Funcionários",
+    label: "Financeiro",
+    desc: "Fluxo de caixa e lancamentos",
+    path: "/admin/financeiro",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
+        <line x1={12} y1={1} x2={12} y2={23} />
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+      </svg>
+    ),
+  },
+  {
+    label: "Cadastro de Funcionarios",
     desc: "Adicionar novo colaborador",
     path: "/admin/funcionarios/novo",
     icon: (
@@ -20,8 +31,8 @@ const menuItems = [
     ),
   },
   {
-    label: "Cadastro de Condomínio",
-    desc: "Gerenciar condomínios",
+    label: "Cadastro de Condominio",
+    desc: "Gerenciar condominios",
     path: "/admin/condominios",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
@@ -38,8 +49,6 @@ const menuItems = [
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         <rect x={8} y={12} width={8} height={10} />
-        <circle cx={10} cy={8} r={1} fill="currentColor" />
-        <circle cx={14} cy={8} r={1} fill="currentColor" />
       </svg>
     ),
   },
@@ -95,7 +104,7 @@ export default function AdminDrawer({ open, onClose }: Props) {
 
         <div className="drawer-footer">
           <p style={{ fontSize: "0.75rem", color: "var(--muted)", textAlign: "center" }}>
-            MH Facilities &amp; Segurança
+            MH Facilities
           </p>
         </div>
       </div>

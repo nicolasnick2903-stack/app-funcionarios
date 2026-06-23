@@ -109,6 +109,31 @@ export interface Fornecedor {
   atualizadoEm?: string;
 }
 
+export type TipoTransacao = "entrada" | "saida";
+
+export type CategoriaTransacao =
+  | "salario"
+  | "fornecedor"
+  | "manutencao"
+  | "material"
+  | "servico"
+  | "taxa"
+  | "outro";
+
+export interface Transacao {
+  id: string;
+  tipo: TipoTransacao;
+  valor: number;
+  descricao: string;
+  categoria: CategoriaTransacao;
+  condominioId?: string;
+  condominioNome?: string;
+  data: string;
+  criadoEm: string;
+  criadoPor: string;
+  observacao?: string;
+}
+
 export type TipoAviso = "geral" | "urgente" | "rh" | "escala" | "treinamento";
 
 export interface Aviso {

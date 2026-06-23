@@ -15,6 +15,7 @@ import AdminPontoScreen from "@/screens/admin/AdminPontoScreen";
 import AdminFeriasScreen from "@/screens/admin/AdminFeriasScreen";
 import CondominiosScreen from "@/screens/admin/CondominiosScreen";
 import FornecedoresScreen from "@/screens/admin/FornecedoresScreen";
+import FinanceiroScreen from "@/screens/admin/FinanceiroScreen";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, carregando } = useAuth();
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="/admin/ferias" element={<AuthGuard><AppLayout><AdminFeriasScreen /></AppLayout></AuthGuard>} />
         <Route path="/admin/condominios" element={<AuthGuard><AppLayout><CondominiosScreen /></AppLayout></AuthGuard>} />
         <Route path="/admin/fornecedores" element={<AuthGuard><AppLayout><FornecedoresScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/financeiro" element={<AuthGuard><AppLayout><FinanceiroScreen /></AppLayout></AuthGuard>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

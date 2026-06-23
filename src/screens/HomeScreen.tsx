@@ -1,16 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/services/auth";
-import { formatarData } from "@/utils/format";
+import { buscarUltimoPonto } from "@/services/ponto";
+import { formatarData, formatarHora, labelTipoPonto } from "@/utils/format";
 import AdminDrawer from "@/components/AdminDrawer";
+import { RegistroPonto } from "@/types";
 
 export default function HomeScreen() {
-  const { perfil } = useAuth();
+  const { user, perfil } = useAuth();
   const navigate = useNavigate();
   const hoje = formatarData(new Date().toISOString());
   const isAdmin = perfil?.perfil === "admin" || perfil?.perfil === "gestor";
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [ultimoPonto, setUltimoPonto] = useState<RegistroPonto | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      buscarUltimoPonto(user.uid).then(setUltimoPonto);
+    }
+  }, [user]);
+
+  const isSameDay = ultimoPonto
+    ? new Date(ultimoPonto.dataHora).toDateString() === new Date().toDateString()
+    : false;
 
   async function handleSair() {
     if (!confirm("Deseja sair do aplicativo?")) return;
@@ -21,7 +34,7 @@ export default function HomeScreen() {
   const atalhos = [
     {
       label: "Registrar Ponto",
-      desc: "Entrada / Saída",
+      desc: "Entrada / Saida",
       path: "/ponto",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={28} height={28}>
@@ -31,8 +44,8 @@ export default function HomeScreen() {
       )
     },
     {
-      label: "Solicitar Férias",
-      desc: "Nova solicitação",
+      label: "Solicitar Ferias",
+      desc: "Nova solicitacao",
       path: "/ferias",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={28} height={28}>
@@ -69,6 +82,17 @@ export default function HomeScreen() {
     }
   ];
 
+  function statusPontoLabel() {
+    if (!isSameDay || !ultimoPonto) return null;
+    if (ultimoPonto.tipo === "entrada") return "Trabalhando desde " + formatarHora(ultimoPonto.dataHora);
+    if (ultimoPonto.tipo === "pausa") return "Em pausa desde " + formatarHora(ultimoPonto.dataHora);
+    if (ultimoPonto.tipo === "saida") return "Saida registrada as " + formatarHora(ultimoPonto.dataHora);
+    return null;
+  }
+
+  const statusPonto = statusPontoLabel();
+  const statusColor = ultimoPonto?.tipo === "saida" ? "var(--danger)" : "var(--gold-soft)";
+
   return (
     <>
     <div className={`screen${drawerOpen ? " screen-locked" : ""}`}>
@@ -84,9 +108,9 @@ export default function HomeScreen() {
         )}
         <div className="home-topbar-info">
           <p className="eyebrow">{hoje}</p>
-          <h1>Olá, {perfil?.nome?.split(" ")[0] ?? "Funcionário"} 👋</h1>
+          <h1>Ola, {perfil?.nome?.split(" ")[0] ?? "Funcionario"}</h1>
           <p className="home-cargo">
-            {perfil?.cargo ?? ""} {perfil?.setor ? `· ${perfil.setor}` : ""}
+            {perfil?.cargo ?? ""} {perfil?.setor ? `- ${perfil.setor}` : ""}
           </p>
         </div>
         <button type="button" className="btn-sair" onClick={handleSair} title="Sair">
@@ -100,11 +124,16 @@ export default function HomeScreen() {
       </div>
 
       <div className="card card-mb20">
-        <p className="card-title">Matrícula</p>
+        <p className="card-title">Matricula</p>
         <p className="matricula-value">{perfil?.matricula ?? "---"}</p>
+        {statusPonto && (
+          <p style={{ fontSize: "0.8rem", marginTop: 8, color: statusColor }}>
+            {statusPonto}
+          </p>
+        )}
       </div>
 
-      <p className="card-title home-section-label">Acesso Rápido</p>
+      <p className="card-title home-section-label">Acesso Rapido</p>
       <div className="quick-grid">
         {isAdmin && (
           <button type="button" className="quick-card" onClick={() => navigate("/admin/condominios")}>
@@ -112,7 +141,7 @@ export default function HomeScreen() {
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            <span>Condomínios</span>
+            <span>Condominios</span>
             <small>Cadastrar e gerenciar</small>
           </button>
         )}
@@ -127,7 +156,7 @@ export default function HomeScreen() {
           </button>
         )}
       </div>
-      <p className="card-title home-section-label home-section-label-spaced">Ações</p>
+      <p className="card-title home-section-label home-section-label-spaced">Acoes</p>
       <div className="quick-grid">
         {atalhos.map((a) => (
           <button key={a.path} type="button" className="quick-card" onClick={() => navigate(a.path)}>

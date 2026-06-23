@@ -28,13 +28,11 @@ export async function solicitarFerias(
 }
 
 export async function buscarMinhasFerias(uid: string): Promise<SolicitacaoFerias[]> {
-  const q = query(
-    collection(db, "ferias"),
-    where("uid", "==", uid),
-    orderBy("criadoTs", "desc")
-  );
+  const q = query(collection(db, "ferias"), where("uid", "==", uid));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as SolicitacaoFerias));
+  return snap.docs
+    .map((d) => ({ id: d.id, ...d.data() } as SolicitacaoFerias))
+    .sort((a, b) => b.criadoEm.localeCompare(a.criadoEm));
 }
 
 export async function buscarTodasFerias(): Promise<SolicitacaoFerias[]> {

@@ -49,6 +49,13 @@ service cloud.firestore {
       allow delete: if request.auth != null && isAdmin();
     }
 
+    // Fornecedores: admin/gestor gerencia; demais autenticados não têm acesso
+    match /fornecedores/{docId} {
+      allow read: if request.auth != null && isGestorOuAdmin();
+      allow create, update: if request.auth != null && isGestorOuAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
+
     // Avisos: qualquer autenticado lê; gestor/rh/admin cria; admin deleta
     match /avisos/{docId} {
       allow read: if request.auth != null;

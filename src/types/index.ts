@@ -81,6 +81,34 @@ export interface Condominio {
   atualizadoEm?: string;
 }
 
+export type CategoriaFornecedor =
+  | "limpeza"
+  | "segurança"
+  | "manutenção"
+  | "jardinagem"
+  | "portaria"
+  | "elétrica"
+  | "hidráulica"
+  | "pintura"
+  | "outro";
+
+export interface Fornecedor {
+  id: string;
+  nome: string;
+  categoria: CategoriaFornecedor;
+  cnpj?: string;
+  nomeContato?: string;
+  telefone?: string;
+  email?: string;
+  endereco?: string;
+  cidade?: string;
+  estado?: string;
+  observacao?: string;
+  ativo: boolean;
+  criadoEm: string;
+  atualizadoEm?: string;
+}
+
 export type TipoAviso = "geral" | "urgente" | "rh" | "escala" | "treinamento";
 
 export interface Aviso {

@@ -1,0 +1,104 @@
+import { useNavigate } from "react-router-dom";
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
+const menuItems = [
+  {
+    label: "Cadastro de Funcionários",
+    desc: "Adicionar novo colaborador",
+    path: "/admin/funcionarios/novo",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
+        <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+        <circle cx={9} cy={7} r={4} />
+        <line x1={19} y1={8} x2={19} y2={14} />
+        <line x1={22} y1={11} x2={16} y2={11} />
+      </svg>
+    ),
+  },
+  {
+    label: "Cadastro de Condomínio",
+    desc: "Gerenciar condomínios",
+    path: "/admin/condominios",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+  },
+  {
+    label: "Cadastro de Fornecedor",
+    desc: "Empresas e prestadores",
+    path: "/admin/fornecedores",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={22} height={22}>
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        <rect x={8} y={12} width={8} height={10} />
+        <circle cx={10} cy={8} r={1} fill="currentColor" />
+        <circle cx={14} cy={8} r={1} fill="currentColor" />
+      </svg>
+    ),
+  },
+];
+
+export default function AdminDrawer({ open, onClose }: Props) {
+  const navigate = useNavigate();
+
+  function go(path: string) {
+    navigate(path);
+    onClose();
+  }
+
+  return (
+    <>
+      <div
+        className={`drawer-overlay ${open ? "drawer-overlay-visible" : ""}`}
+        onClick={onClose}
+      />
+      <div className={`drawer ${open ? "drawer-open" : ""}`}>
+        <div className="drawer-header">
+          <div>
+            <p className="eyebrow" style={{ marginBottom: 2 }}>Admin</p>
+            <p style={{ fontWeight: 900, fontSize: "1rem" }}>Menu de Cadastros</p>
+          </div>
+          <button type="button" className="drawer-close-btn" onClick={onClose} aria-label="Fechar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} width={20} height={20}>
+              <line x1={18} y1={6} x2={6} y2={18} />
+              <line x1={6} y1={6} x2={18} y2={18} />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="drawer-nav">
+          {menuItems.map((item) => (
+            <button
+              key={item.path}
+              type="button"
+              className="drawer-item"
+              onClick={() => go(item.path)}
+            >
+              <span className="drawer-item-icon">{item.icon}</span>
+              <span className="drawer-item-text">
+                <span className="drawer-item-label">{item.label}</span>
+                <span className="drawer-item-desc">{item.desc}</span>
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={16} height={16} style={{ flexShrink: 0, opacity: 0.4 }}>
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          ))}
+        </nav>
+
+        <div className="drawer-footer">
+          <p style={{ fontSize: "0.75rem", color: "var(--muted)", textAlign: "center" }}>
+            MH Facilities &amp; Segurança
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}

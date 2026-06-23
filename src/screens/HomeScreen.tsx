@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/services/auth";
 import { formatarData } from "@/utils/format";
+import AdminDrawer from "@/components/AdminDrawer";
 
 export default function HomeScreen() {
   const { perfil } = useAuth();
   const navigate = useNavigate();
   const hoje = formatarData(new Date().toISOString());
+  const isAdmin = perfil?.perfil === "admin" || perfil?.perfil === "gestor";
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   async function handleSair() {
     if (!confirm("Deseja sair do aplicativo?")) return;
@@ -68,7 +72,16 @@ export default function HomeScreen() {
   return (
     <div className="screen">
       <div className="home-topbar">
-        <div>
+        {isAdmin && (
+          <button type="button" className="btn-hamburger" onClick={() => setDrawerOpen(true)} title="Menu admin">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} width={20} height={20}>
+              <line x1={3} y1={6} x2={21} y2={6} />
+              <line x1={3} y1={12} x2={21} y2={12} />
+              <line x1={3} y1={18} x2={21} y2={18} />
+            </svg>
+          </button>
+        )}
+        <div className="home-topbar-info">
           <p className="eyebrow">{hoje}</p>
           <h1>Olá, {perfil?.nome?.split(" ")[0] ?? "Funcionário"} 👋</h1>
           <p className="home-cargo">
@@ -90,9 +103,9 @@ export default function HomeScreen() {
         <p className="matricula-value">{perfil?.matricula ?? "---"}</p>
       </div>
 
-      <p className="card-title" style={{ marginBottom: 12 }}>Acesso Rápido</p>
+      <p className="card-title home-section-label">Acesso Rápido</p>
       <div className="quick-grid">
-        {(perfil?.perfil === "admin" || perfil?.perfil === "gestor") && (
+        {isAdmin && (
           <button type="button" className="quick-card" onClick={() => navigate("/admin/condominios")}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={28} height={28}>
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
@@ -102,8 +115,18 @@ export default function HomeScreen() {
             <small>Cadastrar e gerenciar</small>
           </button>
         )}
+        {isAdmin && (
+          <button type="button" className="quick-card" onClick={() => navigate("/admin/fornecedores")}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={28} height={28}>
+              <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+              <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+            </svg>
+            <span>Fornecedores</span>
+            <small>Empresas parceiras</small>
+          </button>
+        )}
       </div>
-      <p className="card-title" style={{ marginBottom: 12, marginTop: 8 }}>Ações</p>
+      <p className="card-title home-section-label home-section-label-spaced">Ações</p>
       <div className="quick-grid">
         {atalhos.map((a) => (
           <button key={a.path} type="button" className="quick-card" onClick={() => navigate(a.path)}>
@@ -113,6 +136,10 @@ export default function HomeScreen() {
           </button>
         ))}
       </div>
+
+      {isAdmin && (
+        <AdminDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      )}
     </div>
   );
 }

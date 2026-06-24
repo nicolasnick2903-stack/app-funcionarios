@@ -18,6 +18,14 @@ import AdminAtestadosScreen from "@/screens/admin/AdminAtestadosScreen";
 import CondominiosScreen from "@/screens/admin/CondominiosScreen";
 import FornecedoresScreen from "@/screens/admin/FornecedoresScreen";
 import FinanceiroScreen from "@/screens/admin/FinanceiroScreen";
+import OrdemServicoScreen from "@/screens/admin/OrdemServicoScreen";
+import ChecklistScreen from "@/screens/admin/ChecklistScreen";
+import RelatorioMensalScreen from "@/screens/admin/RelatorioMensalScreen";
+import OcorrenciaScreen from "@/screens/admin/OcorrenciaScreen";
+import AvaliacaoScreen from "@/screens/admin/AvaliacaoScreen";
+import EscalaScreen from "@/screens/admin/EscalaScreen";
+import ReciboScreen from "@/screens/admin/ReciboScreen";
+import PesquisaSatisfacaoScreen from "@/screens/admin/PesquisaSatisfacaoScreen";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, carregando } = useAuth();
@@ -75,6 +83,14 @@ export default function App() {
         <Route path="/admin/condominios" element={<AuthGuard><AppLayout><CondominiosScreen /></AppLayout></AuthGuard>} />
         <Route path="/admin/fornecedores" element={<AuthGuard><AppLayout><FornecedoresScreen /></AppLayout></AuthGuard>} />
         <Route path="/admin/financeiro" element={<AuthGuard><AppLayout><FinanceiroScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/os" element={<AuthGuard><AppLayout><OrdemServicoScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/checklist" element={<AuthGuard><AppLayout><ChecklistScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/relatorio" element={<AuthGuard><AppLayout><RelatorioMensalScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/ocorrencia" element={<AuthGuard><AppLayout><OcorrenciaScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/avaliacao" element={<AuthGuard><AppLayout><AvaliacaoScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/escala" element={<AuthGuard><AppLayout><EscalaScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/recibo" element={<AuthGuard><AppLayout><ReciboScreen /></AppLayout></AuthGuard>} />
+        <Route path="/admin/pesquisa" element={<AuthGuard><AppLayout><PesquisaSatisfacaoScreen /></AppLayout></AuthGuard>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

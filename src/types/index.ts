@@ -147,3 +147,115 @@ export interface Aviso {
   fixado: boolean;
   visivelPara: Perfil[] | "todos";
 }
+
+// ── NOVOS MÓDULOS OPERACIONAIS ───────────────────────────────────
+
+export type StatusOS = "pendente" | "andamento" | "concluido" | "cancelado";
+
+export interface OrdemServico {
+  id: string;
+  numero: string;
+  data: string;
+  cliente: string;
+  local: string;
+  funcionario: string;
+  tipoServico: string;
+  descricao: string;
+  status: StatusOS;
+  assinatura?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export interface Checklist {
+  id: string;
+  data: string;
+  tipo: "diaria" | "semanal";
+  supervisor: string;
+  local: string;
+  items: Record<string, boolean>;
+  nota: "otimo" | "bom" | "regular" | "ruim";
+  obs?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export type StatusRelatorio = "rascunho" | "enviado" | "aprovado";
+
+export interface RelatorioMensal {
+  id: string;
+  mes: string;
+  ano: string;
+  cliente: string;
+  osRealizadas?: string;
+  ocorrencias?: string;
+  indiceQualidade?: string;
+  satisfacao?: string;
+  servicos?: string;
+  observacoes?: string;
+  status: StatusRelatorio;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export type StatusOcorrencia = "aberta" | "analise" | "encerrada";
+export type TipoOcorrencia = "incidente" | "reclamacao" | "irregularidade" | "acidente" | "perda" | "outro";
+
+export interface Ocorrencia {
+  id: string;
+  numero: string;
+  dataHora: string;
+  tipo: TipoOcorrencia;
+  local: string;
+  funcionario?: string;
+  relato: string;
+  providencias?: string;
+  status: StatusOcorrencia;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export interface AvaliacaoDesempenho {
+  id: string;
+  funcionario: string;
+  periodo: string;
+  avaliador: string;
+  criterios: Record<string, number>;
+  obs?: string;
+  criadoEm: string;
+}
+
+export interface EscalaTrabalho {
+  id: string;
+  funcionario: string;
+  posto: string;
+  turno: string;
+  dias: string[];
+  dataInicio: string;
+  dataFim?: string;
+  obs?: string;
+  criadoEm: string;
+}
+
+export interface ReciboServico {
+  id: string;
+  numero: string;
+  data: string;
+  cliente: string;
+  cnpjCpf?: string;
+  valor: number;
+  descricao: string;
+  obs?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export interface PesquisaSatisfacao {
+  id: string;
+  cliente: string;
+  mes: string;
+  criterios: Record<string, number>;
+  comentario?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
